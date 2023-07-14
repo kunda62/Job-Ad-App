@@ -1,0 +1,27 @@
+.search-box {
+  max-width: 300px;
+}
+
+.save-btn {
+  max-width: 100px;;
+  margin-left: auto;
+}
+
+.btn-close {
+  right: 10px;
+  font-size: 13px;
+  top: 10px;
+}
+
+.status {
+  max-width: 200px;
+}
+
+.skills-text {
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+}

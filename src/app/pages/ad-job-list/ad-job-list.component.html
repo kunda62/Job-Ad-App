@@ -1,0 +1,104 @@
+<section class="ad-jobs-list" class="container mt-5">
+  <div class="row">
+    <div class="col-sm-12 col-md-6 d-flex">
+      <input
+        class="form-control search-box me-2"
+        type="text"
+        placeholder="Search.."
+        appInputSearch
+        [value]="searchTerm"
+        (searchTerm)="searchTitle($event)"
+      />
+      <app-filter
+        [options]="filterOptions"
+        [selectedOption]="filterStatus"
+        (status)="filterByStatus($event)"
+      ></app-filter>
+    </div>
+    <div class="col-sm-12 col-md-6 text-md-end mt-3 mt-md-0 ">
+      <button (click)="navigateToCreatePage()" class="btn btn-success">
+        Create
+      </button>
+    </div>
+  </div>
+
+  <form [formGroup]="form">
+    <div class="row card-container">
+      <h1 class="mt-5" *ngIf="noDataFound;else showCards">No Data Found</h1>
+      <ng-template #showCards>
+        <div
+          class="col-sm-12 col-md-6 col-lg-4 mt-4"
+          formArrayName="adList"
+          *ngFor="let ad of adJobList; let i = index"
+        >
+          <ng-container [formGroupName]="i">
+            <div class="card shadow">
+              <div class="card-header d-flex align-items-center">
+                <h4 class="mb-0 overflow-hidden">{{ ad?.title }}</h4>
+                <span class="badge rounded-pill p-2 ms-3"
+                  [ngClass]="{
+                  'bg-success': ad?.status === 'Published',
+                  'bg-warning': ad?.status === 'Draft',
+                  'bg-secondary': ad?.status === 'Archived'
+                  }">
+                  {{ ad?.status }}
+                </span>
+                <i
+                  [class.disable-edit] = "ad.status.toLowerCase() === 'archived'"
+                  (click)="navigateToEditPage(ad)"
+                  class="fa fa-pencil-square-o position-absolute"
+                  aria-hidden="true"
+                ></i>
+              </div>
+              <div class="card-body">
+                <p class="card-text">{{ ad?.description }}</p>
+                <div
+                  class="badge-container position-absolute d-flex flex-wrap pe-1"
+                >
+                  <ng-container
+                    formArrayName="skills"
+                    *ngFor="let skill of ad.skills; let i = index"
+                  >
+                    <ng-container [formGroupName]="i">
+                      <span class="badge p-2 me-1 mt-1">{{ skill }}</span>
+                    </ng-container>
+                  </ng-container>
+                </div>
+              </div>
+  
+              <div
+                class="card-footer d-flex justify-content-between align-items-center"
+              >
+                <button
+                  class="btn btn-outline-success btn-footer"
+                  (click)="updateStatus(ad, i)"
+                  [disabled]="ad.status.toLowerCase() === 'archived'"
+                >
+                  {{
+                    ad.status.toLowerCase() === "draft"
+                      ? "Publish"
+                      : "Archive"
+                  }}
+                </button>
+                <button
+                  class="btn btn-outline-danger"
+                  (click)="deleteJob(ad.id)"
+                >
+                Delete
+                </button>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-template>
+    </div>
+  </form>
+
+  <app-pagination
+      [currentPage]="currentPage"
+      [totalPages]="totalPages"
+      [itemsPerPage]="itemsPerPage"
+      (showAmountChanged)="onShowAmountChanged($event)"
+      (pageChanged)="onPageChange($event)"
+    ></app-pagination>
+</section>

@@ -1,0 +1,18 @@
+<nav class="d-flex justify-content-end align-items-center my-3">
+  <ul class="pagination mb-0">
+    <li class="page-item" [ngClass]="{ disabled: currentPage === 1 }">
+      <a class="page-link" href="javascript:void(0)" (click)="onPageChange(currentPage - 1)">Previous</a>
+    </li>
+    <li class="page-item" [ngClass]="{ active: page === currentPage }" *ngFor="let page of getPages()">
+      <a class="page-link" href="javascript:void(0)" (click)="onPageChange(page)">{{ page }}</a>
+    </li>
+    <li class="page-item" [ngClass]="{ disabled: currentPage === totalPages }">
+      <a class="page-link" href="javascript:void(0)" (click)="onPageChange(currentPage + 1)">Next</a>
+    </li>
+  </ul>
+  <div class="show-amount">
+    <select #showAmountSelect (change)="onShowAmountChange(showAmountSelect.value)" class="form-select">
+      <option *ngFor="let option of showAmountOptions" [value]="option" [selected]="option === itemsPerPage">{{ option }}</option>
+    </select>
+  </div>
+</nav>

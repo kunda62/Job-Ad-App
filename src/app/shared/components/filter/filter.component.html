@@ -1,0 +1,3 @@
+<select class="form-select" (change)="onChange($event)">
+  <option *ngFor="let option of options" [value]="option" [selected]="option === selectedOption">{{ option }}</option>
+</select>

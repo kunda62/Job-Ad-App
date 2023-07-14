@@ -1,0 +1,55 @@
+<section class="create-job" class="container d-flex flex-column justify-content-center">
+  <h1 class="text-center mt-4">Edit Job</h1>
+  <div class="card shadow px-4 py-5 mt-4">
+    <form [formGroup]="form">
+      <div class="row mt-5 ">
+        <div class="col-sm-12">
+          <label>Title</label>
+          <input class="form-control" type="text" placeholder="Default input" aria-label="default input example" formControlName="title">
+          <div class="invalid-feedback" [class.d-block]="this.form.get('title')?.errors?.['titleExists'] && this.form.get('title')?.dirty">
+            Name already exists!.
+          </div>
+        </div>
+        <div class="col-sm-12 mt-3">
+          <label>Description</label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" formControlName="description"></textarea>
+          <div class="invalid-feedback" [class.d-block]="this.form.get('description')?.errors && this.form.get('description')?.touched">
+            Length should not be less than 10 characters.
+          </div>
+        </div>
+      </div>
+    
+      <div class="row mt-3">
+        <div class="col-sm-6">
+          <label>Skills</label>
+          <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username"
+            aria-describedby="button-addon2" formControlName="skillsValue">
+          
+            <button class="btn btn-success" type="button" id="button-addon2" (click)="addNewSkill()" [disabled]="!form.value.skillsValue">Add</button>
+          </div>
+          
+          <ul class="list-group">
+            <ng-container *ngFor="let skill of form.value.skills; let i = index">
+              <li class="list-group-item">
+                <p class="mb-0 skills-text">{{ skill }}</p>
+                <button type="button" class="btn-close position-absolute" aria-label="Close" (click)="deleteSkill(i)"></button>
+              </li>
+            </ng-container>
+          </ul>
+          
+        </div>
+        <div class="col-sm-6">
+          <label>Status</label>
+          <select id="inputState" class="form-select status" formControlName="status" (selected)="jobAd?.status">
+            <option *ngFor="let status of statusOptions" [value]="status.value">{{ status.name }}</option>
+          </select>
+        </div>
+    
+        <div class="row">
+          <button class="btn btn-success save-btn" (click)="saveJob()" [disabled]="this.form.invalid || !formValueChanged">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

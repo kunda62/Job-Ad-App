@@ -1,0 +1,13 @@
+@import 'src/app/styles/_variables.scss';
+
+.pagination {
+
+  .page-link {
+    color: $green-main;
+  }
+  .active .page-link {
+    background-color: $green-main;
+    border-color: $green-main;
+    color: white;
+  }
+}

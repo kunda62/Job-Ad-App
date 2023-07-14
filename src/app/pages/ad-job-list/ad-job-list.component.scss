@@ -1,0 +1,52 @@
+@import '../../styles/variables';
+
+
+.search-box {
+  max-width: 300px;
+}
+
+.fa-pencil-square-o {
+  top: 15px;
+  right: 20px;
+  cursor: pointer;
+  font-size: 20px;
+
+  &:hover {
+    color: #198754;
+  }
+}
+
+.card-container {
+  min-height: calc(100vh - 270px);
+  
+  .card {
+    min-height: 600px;
+  
+    .disable-edit {
+      pointer-events: none;
+      color: $disable-edit-color;
+      opacity: 0.6;
+    }
+  
+    .card-body {
+      position: relative;
+  
+      p {
+        max-height: 300px;
+        overflow: auto;
+      }
+  
+      .badge-container {
+        bottom: 20px;
+  
+        .badge {
+          background-color: $badge-color;
+          max-width: 130px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    } 
+  }
+}
