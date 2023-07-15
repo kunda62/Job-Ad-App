@@ -1,28 +1,27 @@
+@import 'src/app/styles/_variables.scss';
+
 * {
-  font-family: sans-serif;
+  font-family:  Helvetica, sans-serif;
 }
 
 body {
-  background-color: #f1f1f1  !important;
+  background-color: $background-color   !important;
 }
-/* width */
+
 ::-webkit-scrollbar {
   width: 5px;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
   box-shadow: inset 0 0 5px grey; 
   border-radius: 10px;
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #198387; 
+  background: $green-main; 
   border-radius: 10px;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #198754; 
+  background: $green-main; 
 }

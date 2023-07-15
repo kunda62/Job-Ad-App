@@ -1,6 +1,6 @@
 
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { JobAdData } from '../ad-job-list.model';

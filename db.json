@@ -1,55 +1,41 @@
 {
   "jobs": [
     {
-      "id": 5,
-      "title": "Lola",
-      "description": "fsdfkajsdfh;asasa",
-      "skills": [
-        "dasdas",
-        "asdasd",
-        "sdfasdf",
-        "asdfsadf",
-        "sdfsadf",
-        "sdfsadf",
-        "dasd"
-      ],
-      "status": "Archived",
-      "skillsValue": ""
-    },
-    {
-      "id": 6,
-      "title": "Naslov",
-      "description": "Opis filma nesto nesto nesto",
-      "skills": [
-        "Test"
-      ],
-      "status": "Archived",
-      "skillsValue": ""
-    },
-    {
       "id": 10,
-      "title": "fsdfasdsfasdf",
-      "description": "sdfasdfasdfasdf",
+      "title": "Test Title 1",
+      "description": "\nfreestar\n\n\nfreestar\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nisi ipsum, pretium sed viverra id, ullamcorper eget metus. In dictum nibh eget augue euismod efficitur. Etiam molestie nec nisl in accumsan. Nunc ipsum mauris, scelerisque quis velit in, aliquet porttitor nisl. Quisque consectetur tempus est, sit amet varius neque elementum nec. Morbi mollis augue sed convallis aliquet. Sed cursus, tortor a imperdiet mattis, est mi imperdiet ipsum, a tempus massa massa vel mauris. Nunc a ullamcorper nisl. Curabitur in accumsan risus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.",
       "skills": [
-        "dasd"
+        "Angular",
+        "RxJS",
+        "Bootstrap 5",
+        "Node.js",
+        "NgRx",
+        "Skill 1",
+        "Skill 2",
+        "Skill 3",
+        "Skill 4",
+        "Skill 5"
       ],
-      "status": "Published",
-      "skillsValue": ""
+      "status": "Archived",
+      "skillsValue": "Skill 6"
     },
     {
       "id": 11,
-      "title": "asdasd",
-      "description": "asdasdasddasd",
+      "title": "Title",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nisi ipsum, pretium sed viverra id, ullamcorper eget metus. In dictum nibh eget augue euismod efficitur. Etiam molestie nec nisl in accumsan. Nunc ipsum mauris, scelerisque quis velit in, aliquet porttitor nisl. Quisque consectetur tempus est, sit amet varius neque elementum nec. Morbi mollis augue sed convallis aliquet. Sed cursus",
       "skills": [
-        "asdasd"
+        "Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill",
+        "Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill",
+        "Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill",
+        "Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill Long Skill"
       ],
       "status": "Published",
       "skillsValue": ""
     },
     {
       "id": 14,
-      "title": "sdfasdfasdf",
-      "description": "sdfasdfasdfasdf",
+      "title": "Angular",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nisi ipsum, pretium sed viverra id, ullamcorper eget metus. In dictum nibh eget augue euismod efficitur. Etiam molestie nec nisl in accumsan",
       "skills": [
         "sdasdasd"
       ],
@@ -58,42 +44,36 @@
     },
     {
       "id": 15,
-      "title": "dasdasd",
-      "description": "asdasdasdasd",
+      "title": "Java",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nisi ipsum, pretium sed viverra id, ullamcorper eget metus. In dictum nibh eget augue euismod efficitur. Etiam molestie nec nisl in accumsan. Nunc ipsum mauris, scelerisque quis velit in, aliquet porttitor nisl. Quisque consectetur tempus est, sit amet varius neque elementum ",
       "skills": [
-        "asdasd"
+        "Java",
+        "Sprint Boot",
+        "C",
+        "SQL"
       ],
-      "status": "Published",
+      "status": "Draft",
       "skillsValue": ""
     },
     {
       "id": 16,
-      "title": "sdfasdf",
-      "description": "dasdasdasdasd",
+      "title": "Test",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nisi ipsum, pretium sed viverra id, ullamcorper eget metus. In dictum nibh eget augue euismod efficitur. Etiam molestie nec nisl in accumsan. Nunc ipsum mauris, scelerisque quis velit in, aliquet porttitor nisl. Quisque consectetur te",
       "skills": [
-        "fasdfasf"
+        "Skill 1"
       ],
-      "status": "Published",
+      "status": "Draft",
       "skillsValue": ""
     },
     {
       "id": 17,
-      "title": "Naslov 1",
-      "description": "Opis majko pos",
+      "title": "Title 2",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus nisi ipsum, pretium sed viverra id, ullamcorper eget metus. In dictum nibh eget augue euismod efficitur. Etiam molestie nec nisl in accumsan. Nunc ipsum mauris, scelerisque quis velit in, aliquet porttitor nisl. Quisque consectetur te",
       "skills": [
-        "sdfasdfasdf"
+        "Test",
+        "Skill"
       ],
-      "status": "Published",
-      "skillsValue": ""
-    },
-    {
-      "id": 18,
-      "title": "sdfasdfasdffasdf",
-      "description": "dfsadfasdfsadf",
-      "skills": [
-        "sdfasdf"
-      ],
-      "status": "Published",
+      "status": "Archived",
       "skillsValue": ""
     }
   ]

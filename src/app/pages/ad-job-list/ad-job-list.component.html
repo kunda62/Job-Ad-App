@@ -16,8 +16,9 @@
       ></app-filter>
     </div>
     <div class="col-sm-12 col-md-6 text-md-end mt-3 mt-md-0 ">
-      <button (click)="navigateToCreatePage()" class="btn btn-success">
+      <button (click)="navigateToCreatePage()" class="btn btn-success px-4">
         Create
+        <i class="fa fa-plus ms-1 align-middle" aria-hidden="true"></i>
       </button>
     </div>
   </div>
@@ -35,7 +36,7 @@
             <div class="card shadow">
               <div class="card-header d-flex align-items-center">
                 <h4 class="mb-0 overflow-hidden">{{ ad?.title }}</h4>
-                <span class="badge rounded-pill p-2 ms-3"
+                <span class="badge rounded-pill p-2 ms-3 fw-light"
                   [ngClass]="{
                   'bg-success': ad?.status === 'Published',
                   'bg-warning': ad?.status === 'Draft',
@@ -60,7 +61,7 @@
                     *ngFor="let skill of ad.skills; let i = index"
                   >
                     <ng-container [formGroupName]="i">
-                      <span class="badge p-2 me-1 mt-1">{{ skill }}</span>
+                      <span class="badge me-1 mt-1 fw-light">{{ skill }}</span>
                     </ng-container>
                   </ng-container>
                 </div>

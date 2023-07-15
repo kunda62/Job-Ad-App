@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
-import { NavigationExtras, Router } from '@angular/router';
+import { FormArray, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 
 import { AdJobListFacade } from './ad-job-list-facade';
 import { AdJobsListGroup } from './ad-job-list.group';
 import { JobAdData, JobAdResponse } from './ad-job-list.model';
-
 
 @Component({
   selector: 'app-ad-job-list',
@@ -153,7 +152,6 @@ export class AdJobListComponent implements OnInit {
       this._facade.saveJob$.next(formArray.at(index).value);
     }
   }
-  
 
   /**
    * Handle page change
@@ -226,7 +224,6 @@ export class AdJobListComponent implements OnInit {
     // Save search term to local storage
     this._storageService.saveData('searchTerm', JSON.stringify(this.searchTerm));
   }
-  
 
   /**
    * Filter by status
@@ -251,7 +248,6 @@ export class AdJobListComponent implements OnInit {
     // save data to local storage
     this._storageService.saveData('filterStatus', JSON.stringify(this.filterStatus));
   }
-
 
   /**
    * Delete job ad

@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormArray, FormGroup } from '@angular/forms';
+import {  Router } from '@angular/router';
 
 import { EditJobGroup } from './edit-job.group';
 import { EditJobFacade } from './edit-job-facade';

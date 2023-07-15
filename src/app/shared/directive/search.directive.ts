@@ -1,11 +1,3 @@
-/*
- * Date: 11/24/2021
- * Modified: 11/24/2021
- * File: search.directive.ts
- * Project: pwt
- * Copyright EY (c) 2021
- */
-
 import { Directive, ElementRef, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, takeUntil } from 'rxjs/operators';
@@ -25,10 +17,6 @@ export class SearchDirective implements OnInit, OnDestroy {
     private _el: ElementRef
   ) { }
 
-  /**
-   * Initialize the directive/component after Angular first displays the data-bound properties and sets the
-   * directive/component's input properties. Called once, after the first ngOnChanges().
-   */
   ngOnInit(): void {
 
     // subscribe to input keyup event
@@ -44,11 +32,6 @@ export class SearchDirective implements OnInit, OnDestroy {
     });
   }
 
-  /**
-   * Cleanup just before Angular destroys the directive/component.
-   * Unsubscribe Observables and detach event handlers to avoid memory leaks.
-   * Called just before Angular destroys the directive/component.
-   */
   ngOnDestroy(): void {
     this._unsubscribe$.next();
     this._unsubscribe$.complete();

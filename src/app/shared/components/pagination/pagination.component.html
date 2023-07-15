@@ -11,7 +11,7 @@
     </li>
   </ul>
   <div class="show-amount">
-    <select #showAmountSelect (change)="onShowAmountChange(showAmountSelect.value)" class="form-select">
+    <select #showAmountSelect (change)="onShowAmountChange(showAmountSelect.value)" class="form-select ms-2">
       <option *ngFor="let option of showAmountOptions" [value]="option" [selected]="option === itemsPerPage">{{ option }}</option>
     </select>
   </div>

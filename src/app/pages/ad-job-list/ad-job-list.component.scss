@@ -12,7 +12,7 @@
   font-size: 20px;
 
   &:hover {
-    color: #198754;
+    color: $green-main;
   }
 }
 
@@ -45,8 +45,18 @@
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          padding-top: 12px;
+          padding-bottom: 12px;
         }
       }
     } 
   }
+}
+
+.fa-plus {
+  line-height: 1px;
+} 
+
+.btn:disabled {
+  background-color: $disable-btn;
 }
