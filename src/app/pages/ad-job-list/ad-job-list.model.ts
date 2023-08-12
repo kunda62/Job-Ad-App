@@ -27,3 +27,31 @@ export interface JobAdResponse {
   totalCount: number;
   data: JobAdData[];
 }
+
+export interface ErrorResponse {
+  error: Error;
+  requestData?: Object[];
+  message?: string;
+}
+export interface Error {
+  headers: Headers;
+  status: number;
+  statusText: string;
+  url: string;
+  ok: boolean;
+  name: string;
+  message: string;
+  error: any;
+}
+export interface Headers {
+  normalizedNames: Object;
+  lazyUpdate?: null;
+  headers: Object;
+}
+
+export enum JobStatus {
+  PUBLISH = 'published',
+  ARCHIVE = 'archived',
+  DRAFT = 'draft',
+  ALL = 'all'
+}

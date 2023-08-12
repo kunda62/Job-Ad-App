@@ -9,6 +9,7 @@ export class PaginationComponent {
   @Input() currentPage: number = 1;
   @Input() totalPages: number = 3;
   @Input() itemsPerPage: number = 5;
+  @Input() totalItems: number = 0;
   @Input() showAmountOptions: number[] = [10, 5, 25, 50, 100];
 
   @Output() pageChanged: EventEmitter<number> = new EventEmitter<number>();

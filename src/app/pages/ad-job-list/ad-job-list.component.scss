@@ -1,12 +1,11 @@
 @import '../../styles/variables';
 
-
 .search-box {
   max-width: 300px;
 }
 
 .fa-pencil-square-o {
-  top: 15px;
+  top: 24px;
   right: 20px;
   cursor: pointer;
   font-size: 20px;
@@ -21,6 +20,10 @@
   
   .card {
     min-height: 600px;
+
+    &-header {
+      min-height: 65px;
+    }
   
     .disable-edit {
       pointer-events: none;
@@ -28,7 +31,7 @@
       opacity: 0.6;
     }
   
-    .card-body {
+    &-body {
       position: relative;
   
       p {
@@ -50,6 +53,19 @@
       }
     } 
   }
+}
+
+.spinner-container {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(132 132 132 / 50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .fa-plus {

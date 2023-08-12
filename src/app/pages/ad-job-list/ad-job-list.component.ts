@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
 
 import { AdJobListFacade } from './ad-job-list-facade';
 import { AdJobsListGroup } from './ad-job-list.group';
-import { JobAdData, JobAdResponse } from './ad-job-list.model';
+import { ErrorResponse, JobAdData, JobStatus } from './ad-job-list.model';
+import { AdJobEntityService } from './services/ad-job-entity.service';
+import { AdJobDataService } from './services/ad-job-data.service';
 
 @Component({
   selector: 'app-ad-job-list',
@@ -18,15 +21,17 @@ export class AdJobListComponent implements OnInit {
   form: FormGroup;
   adJobList: JobAdData[] | null;
   allTitles: string[] = [];
-  filterStatus = '';
-  searchTerm = '';
+
   noDataFound = false;
+  isLoading: Observable<boolean> | null;
   
   // pagination settings
   currentPage: number = 1;
   totalPages: number = 0;
   itemsPerPage: number = 10;
   totalItems = 0;
+  filterStatus = '';
+  searchTerm = '';
 
   filterOptions: string[] = ['All', 'Published', 'Draft', 'Archived'];
 
@@ -34,80 +39,46 @@ export class AdJobListComponent implements OnInit {
     private _facade: AdJobListFacade,
     private _group: AdJobsListGroup,
     private _router: Router,
-    private _storageService: LocalStorageService
+    private _storageService: LocalStorageService,
+    private _service: AdJobEntityService,
+    private _dataService: AdJobDataService
     ) { 
     this.form = this._group.form;
     this.adJobList = null;
+    this.isLoading = this._service.loading$;
   } 
 
   ngOnInit(): void {
     this.getDataFromStorage();
-
-    // get ad list and total count
-    this._facade.jobListLoad().subscribe({
-      next: (res: JobAdResponse) => {
-        this.noDataFound = false;
-
-        // get all titles
-        this.allTitles = res.data.map((item: JobAdData) => item.title);
-        this.totalItems = res.totalCount;
-        this.adJobList = res.data;
-
-        !this.adJobList.length ? this.noDataFound = true : null;
-
-        // get total pages 
+    
+    this._service.entities$.subscribe({
+      next: (value: JobAdData[]) => {
+        
+        this.adJobList = value.slice(0, this.itemsPerPage);
+        this._group.addJobsGroup(this.adJobList);
+        
+        this.totalItems = this._dataService.totalJobsCount$.getValue();
         this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
-
-        // reset form before population
-        this._group.clearForm();
-
-        // fill the group
-        this._group.addJobsGroup(res.data);
-      }
-    });
-
-    // edit job status
-    this._facade.editJobStatus().subscribe({
-      next: (res) => {
-        if(!res.error) {
-          
-          // call ad jobs list
-          this._facade.jobList$.next({
-            _limit: this.itemsPerPage,
-            _page: this.currentPage,
-            _like: this.filterStatus,
-            _q: this.searchTerm
-          });
+        this.allTitles = value.map((item: JobAdData) => item.title);
+        
+        // reset to first page
+        if(this.currentPage > 1 && !this.adJobList.length) {
+          this.onPageChange(1);
         }
       }
     });
 
-    this._facade.jobDelete().subscribe({
-      next: (res) => {
-        if (!res.error) {
-
-          // reset current page 
-          this.currentPage = 1;
-          this._storageService.removeData('currentPage');
-
-          // call ad job list
-          this._facade.jobList$.next({
-            _limit: this.itemsPerPage,
-            _page: 1,
-            _like: this.filterStatus,
-            _q: this.searchTerm
-          });
-        }
-      }
+    this._facade.loadList().subscribe({
+      next: (value: JobAdData[]) => this._service.addAllToCache(value)
     });
     
-    // inital call for ad list
-    this._facade.jobList$.next({
-      _limit: this.itemsPerPage,
-      _page: this.currentPage,
-      _like: this.filterStatus,
-      _q: this.searchTerm
-    });
+    this._facade.deleteJob().subscribe({
+      next: (value: ErrorResponse | number | any) => {
+        if(!value.error) {
+          this._dataService.totalJobsCount$.next(this._dataService.totalJobsCount$.value - 1);
+        }
+      }
+    })
   }
 
   /**
@@ -117,6 +88,7 @@ export class AdJobListComponent implements OnInit {
     const data = { titles: this.allTitles }
     this._router.navigateByUrl('home/add', {state: data});
   }
+
   /**
    * Navigate to edit page and send the job data nad titles array
    * @param data 
@@ -124,7 +96,9 @@ export class AdJobListComponent implements OnInit {
   navigateToEditPage(value: JobAdData) {
 
     // remove current title from array
-    const titles = this.allTitles.filter((item: string) => item.toLowerCase().trim() !== value.title.toLowerCase().trim());
+    const titles = this.allTitles.filter((item: string) =>
+      item.toLowerCase().trim() !== value.title.toLowerCase().trim());
+
     const data = {data: value, titles: titles};
 
     this._router.navigateByUrl('home/edit', {state: data});
@@ -140,16 +114,17 @@ export class AdJobListComponent implements OnInit {
     let newStatus: string = '';
     
     // check for status and set the new one
-    if (data.status.toLowerCase() === 'draft') {
+    if (data.status.toLowerCase() === JobStatus.DRAFT) {
       newStatus = 'Published';
-    } else if (data.status.toLowerCase() === 'published') {
+    } else if (data.status.toLowerCase() === JobStatus.PUBLISH) {
       newStatus = 'Archived';
     }
     
     // patch new status
     if (newStatus) {
       formArray.at(index)?.get('status')?.patchValue(newStatus, { emitEvent: false });
-      this._facade.saveJob$.next(formArray.at(index).value);
+
+      this._service.update(formArray.at(index).value)
     }
   }
 
@@ -158,16 +133,15 @@ export class AdJobListComponent implements OnInit {
    * @param page 
    */
   onPageChange(page: number): void {
-    if (this.currentPage !== page) {
-      this.currentPage = page;
-
-      this._facade.jobList$.next({
-        _limit: this.itemsPerPage,
-        _page: this.currentPage,
-        _like: this.filterStatus,
-        _q: this.searchTerm
-      });
-    }
+    this.currentPage = page;
+    console.log('page: ', page);
+    
+    this._facade.jobList$.next({
+      _limit: this.itemsPerPage,
+      _page: this.currentPage,
+      _like: this.filterStatus,
+      _q: this.searchTerm
+    });
 
     // save current page to local storage
     this._storageService.saveData('currentPage', JSON.stringify(this.currentPage));
@@ -234,7 +208,7 @@ export class AdJobListComponent implements OnInit {
     this.currentPage = 1;
 
     // reset filter status
-    if (this.filterStatus.toLowerCase() === 'all') {
+    if (this.filterStatus.toLowerCase() === JobStatus.ALL) {
       this.filterStatus = '';
     }
 
@@ -254,7 +228,7 @@ export class AdJobListComponent implements OnInit {
    * @param id 
    */
   deleteJob(id: number) {
-    this._facade.deleteJob$.next(id);
+    this._facade.delete$.next(id);
   }
 
   /**

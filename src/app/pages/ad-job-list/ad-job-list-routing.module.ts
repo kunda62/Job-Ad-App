@@ -4,11 +4,15 @@ import { NgModule } from "@angular/core";
 import { AdJobListComponent } from './ad-job-list.component';
 import { EditJobComponent } from './edit-job/edit-job.component';
 import { CreateJobComponent } from './create-job/create-job.component';
+import { AdJobResolver } from './services/ad-job.resolver';
 
 const routes: Routes = [
   {
     path: "",
-    component: AdJobListComponent
+    component: AdJobListComponent,
+    resolve: {
+      jobs: AdJobResolver
+    }
   },
   {
     path: 'edit',

@@ -8,13 +8,13 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class FilterComponent {
   @Input() options: string[] = [];
   @Input() selectedOption: string = '';
-  @Output() status: EventEmitter<string> = new EventEmitter<string>();
-
+  @Output() status: EventEmitter<string> = new EventEmitter<string>();  
+  
   /**
    * Emit value on change
    * @param value 
-   */
-  onChange(value: Event): void {
+  */
+ onChange(value: Event): void {
     this.status.emit((value.target as HTMLInputElement).value);
   }
 }

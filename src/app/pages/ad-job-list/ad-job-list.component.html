@@ -1,5 +1,10 @@
-<section class="ad-jobs-list" class="container mt-5">
-  <div class="row">
+<section class="ad-jobs-list" class="container mt-4">
+  <div class="text-center spinner-container" *ngIf="isLoading | async">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  <div class="row mb-3 mt-5">
     <div class="col-sm-12 col-md-6 d-flex">
       <input
         class="form-control search-box me-2"
@@ -23,7 +28,7 @@
     </div>
   </div>
 
-  <form [formGroup]="form">
+  <form [formGroup]="form" *ngIf="(isLoading | async) === false">
     <div class="row card-container">
       <h1 class="mt-5" *ngIf="noDataFound;else showCards">No Data Found</h1>
       <ng-template #showCards>

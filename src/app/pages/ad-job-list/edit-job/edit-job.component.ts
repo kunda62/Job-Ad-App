@@ -4,7 +4,8 @@ import {  Router } from '@angular/router';
 
 import { EditJobGroup } from './edit-job.group';
 import { EditJobFacade } from './edit-job-facade';
-import { JobAdData } from '../ad-job-list.model';
+import { ErrorResponse, JobAdData, JobStatus } from '../ad-job-list.model';
+import { AdJobEntityService } from '../services/ad-job-entity.service';
 
 @Component({
   selector: 'app-edit-job',
@@ -39,17 +40,10 @@ export class EditJobComponent implements OnInit, AfterViewInit {
       return;
     }
     // set the status options
-    if (this.jobAd.status.toLowerCase() === 'draft') {
-      this.statusOptions = [
-        { name: 'Publish', value: 'Published' },
-        { name: 'Archive', value: 'Archived' },
-        { name: 'Draft', value: 'Draft' },
-      ];
-    } else if (this.jobAd.status.toLowerCase() === 'published') {
-      this.statusOptions = [
-        { name: 'Archive', value: 'Archived' },
-        { name: 'Publish', value: 'Published' },
-      ];
+    if (this.jobAd.status.toLowerCase() === JobStatus.DRAFT) {
+      this.statusOptions = ['Published', 'Archived', 'Draft'];
+    } else if (this.jobAd.status.toLowerCase() === JobStatus.PUBLISH) {
+      this.statusOptions = [ 'Archived', 'Published'];
     }
 
     // set same title validator
@@ -58,19 +52,14 @@ export class EditJobComponent implements OnInit, AfterViewInit {
     //fill the form
     this._group.setFormValue(this.jobAd);
 
-    // edit job
+    // edit job and navigate on success
     this._facade.editJob().subscribe({
-      next: (res) => {
-        if (!res.error) {
-
-          // reset value change 
-          this.formValueChanged = false;
-
-          // navigate to home page
+      next: (value: ErrorResponse) => {
+        if(!value.error) {
           this._router.navigate(['home']);
         }
-      },
-    });
+      }
+    })
   }
 
   ngAfterViewInit(): void {
@@ -107,6 +96,6 @@ export class EditJobComponent implements OnInit, AfterViewInit {
    * Save job
    */
   saveJob(): void {
-    this._facade.saveJob$.next(this.form.value);
+    this._facade.editJob$.next(this.form.value);
   }
 }

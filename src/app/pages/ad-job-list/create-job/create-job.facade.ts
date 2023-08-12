@@ -1,11 +1,12 @@
 
 
 import { Injectable, OnDestroy } from "@angular/core";
-import { catchError, switchMap, takeUntil } from "rxjs/operators";
+import { catchError, takeUntil, switchMap } from "rxjs/operators";
 import { Observable, Subject, of } from "rxjs";
 
-import { CreateJobService } from "./create-job.service";
 import { JobAdData } from "../ad-job-list.model";
+import { AdJobEntityService } from "../services/ad-job-entity.service";
+import { MergeStrategy } from "@ngrx/data";
 
 @Injectable()
 export class CreateJobFacade implements OnDestroy {
@@ -14,7 +15,7 @@ export class CreateJobFacade implements OnDestroy {
   // unsubscribe cleaner
   private _unsubscribe$ = new Subject<void>();
 
-  constructor(private _service: CreateJobService) {}
+  constructor(private _service: AdJobEntityService) {}
 
   /**
    * Save job
@@ -23,10 +24,11 @@ export class CreateJobFacade implements OnDestroy {
   saveJob(): Observable<any> {
     return this.saveJob$.pipe(
       takeUntil(this._unsubscribe$),
-      switchMap((data: any) =>
-        this._service.saveJob(data).pipe(catchError((err: any) => of(err)))
-      )
-    );
+      switchMap((value: JobAdData) => this._service.add(value, {
+        mergeStrategy: MergeStrategy.PreserveChanges,
+      })),
+      catchError(err => of(err))
+    )
   }
   
   ngOnDestroy(): void {

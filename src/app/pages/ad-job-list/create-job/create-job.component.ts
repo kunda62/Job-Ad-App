@@ -3,7 +3,9 @@ import { AbstractControl, FormArray, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { CreateJobGroup } from './create-job.group';
-import { CreateJobFacade } from './create-job-facade';
+import { CreateJobFacade } from './create-job.facade';
+import { AdJobDataService } from '../services/ad-job-data.service';
+import { ErrorResponse } from '../ad-job-list.model';
 
 @Component({
   selector: 'app-create-job',
@@ -17,9 +19,10 @@ export class CreateJobComponent implements OnInit {
   allTitles: string[] = [];
   
   constructor(
-    private _facade: CreateJobFacade,
     private _group: CreateJobGroup,
-    private _router: Router
+    private _router: Router,
+    private _facade: CreateJobFacade,
+    private _service: AdJobDataService
   ) {
     this.form = this._group.form;
   }
@@ -34,13 +37,14 @@ export class CreateJobComponent implements OnInit {
       .get('title')
       ?.addValidators(this._group.titleExistsValidator(this.allTitles));
 
-    // save job
+    // save job and navigate on success
     this._facade.saveJob().subscribe({
-      next: (res) => {
-        if (!res.errors) {
+      next: (value: ErrorResponse) => {
+        if(!value?.error) {
+          this._service.totalJobsCount$.next(this._service.totalJobsCount$.value + 1);
           this._router.navigate(['home']);
         }
-      },
+      }
     });
   }
 
@@ -70,7 +74,7 @@ export class CreateJobComponent implements OnInit {
    * Save job ad
    */
   saveJob(): void {
-    this._facade.saveJob$.next(this.form.value);
+    this._facade.saveJob$.next(this.form.value)
   }
 
   /**

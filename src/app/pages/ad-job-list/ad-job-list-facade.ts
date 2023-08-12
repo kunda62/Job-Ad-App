@@ -1,73 +1,44 @@
 
 
 import { Injectable, OnDestroy } from "@angular/core";
-import { Observable, of, Subject } from "rxjs";
-import { catchError, map, switchMap, takeUntil } from "rxjs/operators";
+import { Observable, Subject, of } from "rxjs";
+import { catchError, map, switchMap, takeUntil } from "rxjs/operators";;
 
-import { AdJobListService } from "./ad-job-list.service";
-import { HtppResponse, JobAdData, PaginationParams } from "./ad-job-list.model";
+import { JobAdData, PaginationParams } from "./ad-job-list.model";
+import { AdJobEntityService } from "./services/ad-job-entity.service";
 
 @Injectable()
 export class AdJobListFacade implements OnDestroy {
   jobList$: Subject<PaginationParams> = new Subject<PaginationParams>();
-  deleteJob$: Subject<number> = new Subject <number>();
-  saveJob$: Subject<JobAdData> = new Subject<JobAdData>();
+  delete$: Subject<number> = new Subject<number>();
 
   // unsubscribe cleaner
   private _unsubscribe$ = new Subject<void>();
 
-  constructor(private _service: AdJobListService) {}
+  constructor(private _service: AdJobEntityService) {}
 
   /**
-   * Load ad jobs list
-   * @returns 
+   * Load job list
+   * @returns
    */
-  jobListLoad(): Observable<any> {
+  loadList(): Observable<JobAdData[]> {
     return this.jobList$.pipe(
       takeUntil(this._unsubscribe$),
-      switchMap((params: PaginationParams) => {
-        return this._service.getAllAdds$(params).pipe(
-          map((response: HtppResponse) => {
-            
-            // get the total count from the headers
-            let totalCount = 0;
-            if (response.headers) {
-              const totalCountHeader = response.headers.get('X-Total-Count');
-              totalCount = totalCountHeader ? +totalCountHeader : 0;
-            }
-            const data = response.body;
-  
-            return { totalCount, data };
-          }),
-          catchError((error: any) => of(error))
-        );
-      })
-    );
-  }
-
-  /**
-   * Edit job status
-   * @returns 
-   */
-  editJobStatus(): Observable<any> {
-    return this.saveJob$.pipe(
-      takeUntil(this._unsubscribe$),
-      switchMap((data: any) =>
-        this._service.editJob$(data).pipe(catchError((err: any) => of(err)))
+      switchMap((value: PaginationParams | any) =>
+        this._service.getWithQuery(value).pipe(
+          map((value: any) => value),
+          catchError((err) => of(err))
+        )
       )
     );
   }
 
-  /**
-   * Delete job 
-   * @returns 
-   */
-  jobDelete(): Observable<any> {
-    return this.deleteJob$.pipe(
+  deleteJob(): Observable<number> {
+    return this.delete$.pipe(
       takeUntil(this._unsubscribe$),
-      switchMap((id: number) => this._service.deleteJob$(id).pipe(
-        catchError(err => of(err))
-      ))
+      switchMap((id: number) =>
+        this._service.delete(id).pipe(catchError((err) => of(err)))
+      )
     );
   }
 

@@ -55,7 +55,7 @@ export class CreateJobGroup {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const newTitle: string = control.value;
       if (existingTitles.some(
-          (title: string) => title.trim() === newTitle?.trim())
+          (title: string) => title.trim().toLowerCase() === newTitle?.trim().toLowerCase())
       ) {
 
         // set validator
